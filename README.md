@@ -10,8 +10,8 @@ _persistent-layout_ is a plugin to extend the UX and UI of [Joplin](https://jopl
 
 * [Features](#features)
   * [Commands](#commands)
-  * [UI additions](#ui-additions)
-  * [User settings](#user-settings)
+  * [UI enhancements](#ui-enhancements)
+  * [User options](#user-options)
 * [Installation](#installation)
 * [UI tweaks](#ui-tweaks)
 * [Support](#support)
@@ -26,7 +26,7 @@ _persistent-layout_ is a plugin to extend the UX and UI of [Joplin](https://jopl
 - Add new Note (`addNewNote`)
   - Adds a new note to the list
 
-### UI additions
+### UI enhancements
 
 > TODO - describe additions to the UI (with images, if available)\
 > New panels, views, dialogs, ... in sub-chapters
@@ -35,9 +35,9 @@ _persistent-layout_ is a plugin to extend the UX and UI of [Joplin](https://jopl
 
 To get the best result, check out the [UI tweaks](#ui-tweaks).
 
-### User settings
+### User options
 
-> TODO - describe user settings (if available)
+> TODO - describe User options (if available)
 
 ## Installation
 
@@ -51,7 +51,11 @@ E.g. to not show something which is displayed elsewhere via the new plugin).
 
 ## Support
 
-If you need help or found a bug, open an issue on the [GitHub repository](https://github.com/benji300-joplin-extensions/persistent-layout/issue).
+If you need help or found a bug, open an issue on the [GitHub repository](https://github.com/benji300-joplin-extensions/persistent-layout/issues).
+
+## Changes
+
+See [CHANGELOG](./CHANGELOG.md) for details.
 
 ## License
 
