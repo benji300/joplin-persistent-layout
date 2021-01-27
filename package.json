@@ -1,7 +1,7 @@
 {
   "name": "joplin-plugin-persistent-editor-layout",
   "version": "1.0.0",
-  "description": "Save editor layout for each note separately.",
+  "description": "Save the editor layout (editor/viewer/split view) for each note separately with special tags.",
   "author": "Benji300",
   "homepage": "https://github.com/benji300/joplin-persistent-layout",
   "bugs": {
