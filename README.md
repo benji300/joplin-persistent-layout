@@ -4,7 +4,7 @@ Persistent Editor Layout is a plugin to extend the UX of [Joplin's](https://jopl
 
 It allows to persist the editor layout (editor/viewer/split view) for each note separately with [special tags](#usage).
 
-> :warning: **CAUTION** - Requires Joplin **v1.6.7** or newer
+> :warning: **CAUTION** - Requires Joplin **v1.6.8** or newer
 
 ## Table of contents
 
@@ -12,6 +12,8 @@ It allows to persist the editor layout (editor/viewer/split view) for each note 
 - [Installation](#installation)
 - [Usage](#usage)
   - [Persist layout for a note](#persist-layout-for-a-note)
+- [Commands](#commands)
+  - [Keyboard shortcuts](#keyboard-shortcuts)
 - [User options](#user-options)
 - [Feedback](#feedback)
 - [Support](#support)
@@ -62,12 +64,27 @@ To persist the layout for a note simply add one of the following tags as specifi
 | `layout:split`  | Split view             |
 | `layout:viewer` | Rendered markdown view |
 
-#### Notes
+This can be done by manually adding them to the notes or via the [command](#commands).
 
-- When the selected note is changed, the editor layout is changed also
-- If none of the tags is specified, the editor layout is not changed
-  - The currently set one will be kept, as before
+- **The setting `View > Layout button sequence` must be set according to the labels used.**
+  That means, if the label `layout:viewer` is set in at least one note, the setting must also contain `Viewer`.
+  Otherwise layout will not be changed to the expected one.
+- When the selected note is changed, the editor layout is changed also.
+- If none of the tags is specified, the editor layout is not changed. The currently set one will be kept, as before.
 - If more than one is specified, they are checked in the order above and the first matching one is used.
+
+## Commands
+
+This plugin provides additional commands as described in the following table.
+
+| Command Label         | Command ID            | Description                                                       | Menu contexts                                 |
+| --------------------- | --------------------- | ----------------------------------------------------------------- | --------------------------------------------- |
+| Persist editor layout | `persistEditorLayout` | Persist the current active editor layout for the selected note(s) | `Tools`, `NoteListContext`, `Command palette` |
+
+### Keyboard shortcuts
+
+Keyboard shortcuts can be assigned in user options via `Tools > Options > Keyboard Shortcuts` to all [commands](#commands) which are assigned to the `Tools` menu context.
+In the keyboard shortcut editor, search for the command label where shortcuts shall be added.
 
 ## Feedback
 
