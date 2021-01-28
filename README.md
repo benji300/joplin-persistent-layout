@@ -14,7 +14,6 @@ It allows to persist the editor layout (editor/viewer/split view) for each note 
   - [Persist layout for a note](#persist-layout-for-a-note)
 - [Commands](#commands)
   - [Keyboard shortcuts](#keyboard-shortcuts)
-- [User options](#user-options)
 - [Feedback](#feedback)
 - [Support](#support)
 - [Development](#development)
