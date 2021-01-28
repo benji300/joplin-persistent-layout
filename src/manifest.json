@@ -1,6 +1,6 @@
 {
   "manifest_version": 1,
-  "id": "joplin.plugin.benji.persistent.layout",
+  "id": "joplin.plugin.benji.persistentLayout",
   "app_min_version": "1.7.3",
   "version": "1.0.0",
   "name": "Persistent Editor Layout",
