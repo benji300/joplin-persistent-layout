@@ -65,8 +65,8 @@ To persist the layout for a note simply add one of the following tags as specifi
 
 This can be done by manually adding them to the notes or via the [command](#commands).
 
-- **The setting `View > Layout button sequence` must be set according to the labels used.**
-  That means, if the label `layout:viewer` is set in at least one note, the setting must also contain `Viewer`.
+- **The setting `View > Layout button sequence` must be set according to the tags used.**
+  That means, if the tag `layout:viewer` is set in at least one note, the setting must also contain `Viewer`.
   Otherwise layout will not be changed to the expected one.
 - When the selected note is changed, the editor layout is changed also.
 - If none of the tags is specified, the editor layout is not changed. The currently set one will be kept, as before.
@@ -88,11 +88,11 @@ In the keyboard shortcut editor, search for the command label where shortcuts sh
 ## Feedback
 
 - :question: Need help?
-  - Ask a question on the [Joplin Forum](https://discourse.joplinapp.org/)
+  - Ask a question on the [Joplin Forum](https://discourse.joplinapp.org/t/persist-editor-layout-plugin/14411)
 - :bulb: An idea to improve or enhance the plugin?
-  - Start a new discussion on the [Forum](https://discourse.joplinapp.org/) or upvote [popular feature requests](https://github.com/benji300/joplin-persistent-layout/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement+sort%3Areactions-%2B1-desc+)
+  - Start a new discussion on the [Forum](https://discourse.joplinapp.org/t/persist-editor-layout-plugin/14411) or upvote [popular feature requests](https://github.com/benji300/joplin-persistent-layout/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement+sort%3Areactions-%2B1-desc+)
 - :bug: Found a bug?
-  - Check the [Forum](https://discourse.joplinapp.org/) if anyone else already reported the same issue. Otherwise report it by yourself.
+  - Check the [Forum](https://discourse.joplinapp.org/t/persist-editor-layout-plugin/14411) if anyone else already reported the same issue. Otherwise report it by yourself.
 
 ## Support
 
