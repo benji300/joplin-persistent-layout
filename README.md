@@ -24,7 +24,7 @@ It allows to persist the editor layout (editor/viewer/split view) for each note 
 
 - Persist the editor layout (`editor / split view / viewer`) for each note
 - Uses [special tags](#persist-layout-for-a-note)
-  - So persisted layout is synced acrros devices
+  - So persisted layout is synced across devices
   - Requires the plugin to be installed
 
 ## Installation
