@@ -14,7 +14,8 @@ joplin.plugins.register({
       None = 0,
       Editor = 1,
       Split = 2,
-      Viewer = 3
+      Viewer = 3,
+      Richtext = 4 // WYSIWYG
     }
 
     /**
@@ -79,25 +80,36 @@ joplin.plugins.register({
       if (LayoutType.Viewer != layout) {
         await removeTag(noteId, LayoutType.Viewer);
       }
+      if (LayoutType.Richtext != layout) {
+        await removeTag(noteId, LayoutType.Richtext);
+      }
       // add layout tag
       await addTag(noteId, layout);
     }
 
-    async function layoutMatchesVisiblePanes(layout: LayoutType): Promise<boolean> {
+    function visiblePanesMatchLayout(noteVisiblePanes: any[], layout: LayoutType): boolean {
       // noteVisiblePanes = ["editor","viewer"]
-      const noteVisiblePanes: any[] = await SETTINGS.globalValue('noteVisiblePanes');
       return (LayoutSpec[layout].panes.sort().toString() == noteVisiblePanes.sort().toString());
     }
 
     async function toggleVisiblePanes(layout: LayoutType) {
-      console.log(`Toggle layout: ${JSON.stringify(LayoutSpec[layout])}`);
+      // console.log(`Toggle layout: ${JSON.stringify(LayoutSpec[layout])}`);
       const codeView: boolean = await SETTINGS.globalValue('editor.codeView');
 
-      for (let i: number = 0; i < 3; i++) {
-        if (await layoutMatchesVisiblePanes(layout)) {
-          break;
+      // toggle markdown/rich text editor
+      if (LayoutSpec[layout].codeView != codeView) {
+        await COMMANDS.execute('toggleEditors');
+      }
+
+      // toggle panes for markdown editor
+      if (LayoutSpec[layout].codeView) {
+        for (let i: number = 0; i < 3; i++) {
+          const visiblePanes: any[] = await SETTINGS.globalValue('noteVisiblePanes');
+          if (visiblePanesMatchLayout(visiblePanes, layout)) {
+            break;
+          }
+          await COMMANDS.execute('toggleVisiblePanes');
         }
-        await COMMANDS.execute('toggleVisiblePanes');
       }
     }
 
@@ -118,18 +130,24 @@ joplin.plugins.register({
         if (!selectedNoteIds) selectedNoteIds = await WORKSPACE.selectedNoteIds();
         if (!selectedNoteIds) return;
 
-        const editor: boolean = await layoutMatchesVisiblePanes(LayoutType.Editor);
-        const split: boolean = await layoutMatchesVisiblePanes(LayoutType.Split);
-        const viewer: boolean = await layoutMatchesVisiblePanes(LayoutType.Viewer);
+        const codeView: boolean = await SETTINGS.globalValue('editor.codeView');
+        const noteVisiblePanes: any[] = await SETTINGS.globalValue('noteVisiblePanes');
+        const editor: boolean = visiblePanesMatchLayout(noteVisiblePanes, LayoutType.Editor);
+        const split: boolean = visiblePanesMatchLayout(noteVisiblePanes, LayoutType.Split);
+        const viewer: boolean = visiblePanesMatchLayout(noteVisiblePanes, LayoutType.Viewer);
 
         // persist for all selected notes
         for (const noteId of selectedNoteIds) {
-          if (editor) {
-            await persistEditorLayout(noteId, LayoutType.Editor);
-          } else if (split) {
-            await persistEditorLayout(noteId, LayoutType.Split);
-          } else if (viewer) {
-            await persistEditorLayout(noteId, LayoutType.Viewer);
+          if (codeView) {
+            if (editor) {
+              await persistEditorLayout(noteId, LayoutType.Editor);
+            } else if (split) {
+              await persistEditorLayout(noteId, LayoutType.Split);
+            } else if (viewer) {
+              await persistEditorLayout(noteId, LayoutType.Viewer);
+            }
+          } else {
+            await persistEditorLayout(noteId, LayoutType.Richtext);
           }
         }
       }
@@ -151,20 +169,20 @@ joplin.plugins.register({
 
         if (selectedNote) {
           const noteTags = await getAll(['notes', selectedNote.id, 'tags'], { fields: ['id', 'title'], page: 1 });
-          let layout: LayoutType;
+          let layout: LayoutType = LayoutType.None;
 
-          if (noteTags.find(x => x.title === LayoutSpec[LayoutType.Editor].label)) {        // editor
+          if (noteTags.find(x => x.title === LayoutSpec[LayoutType.Editor].label)) {          // editor
             layout = LayoutType.Editor;
-          } else if (noteTags.find(x => x.title === LayoutSpec[LayoutType.Split].label)) {  // split view
+          } else if (noteTags.find(x => x.title === LayoutSpec[LayoutType.Split].label)) {    // split view
             layout = LayoutType.Split;
-          } else if (noteTags.find(x => x.title === LayoutSpec[LayoutType.Viewer].label)) { // viewer
+          } else if (noteTags.find(x => x.title === LayoutSpec[LayoutType.Viewer].label)) {   // viewer
             layout = LayoutType.Viewer;
+          } else if (noteTags.find(x => x.title === LayoutSpec[LayoutType.Richtext].label)) { // rich text
+            layout = LayoutType.Richtext;
           }
 
-          if (layout) {
+          if (layout > 0) {
             await toggleVisiblePanes(layout);
-          } else {
-            console.log(`No layout change`);
           }
         }
       } catch (error) {
