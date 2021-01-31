@@ -11,9 +11,10 @@ joplin.plugins.register({
     //#region HELPERS
 
     enum LayoutType {
-      Editor = 0,
-      Split = 1,
-      Viewer = 2
+      None = 0,
+      Editor = 1,
+      Split = 2,
+      Viewer = 3
     }
 
     /**
@@ -21,6 +22,7 @@ joplin.plugins.register({
      */
     interface ILayoutSpec {
       label: string,
+      codeView: boolean,
       panes: string[]
     }
 
@@ -28,9 +30,11 @@ joplin.plugins.register({
      * Array of favorite descriptions. Order must match with LayoutType enum.
      */
     const LayoutSpec: ILayoutSpec[] = [
-      { label: 'layout:editor', panes: ["editor"] }, // Editor
-      { label: 'layout:split', panes: ["editor", "viewer"] }, // Split
-      { label: 'layout:viewer', panes: ["viewer"] } // Viewer
+      { label: 'layout:none', codeView: true, panes: [""] }, // no change
+      { label: 'layout:editor', codeView: true, panes: ["editor"] }, // editor
+      { label: 'layout:split', codeView: true, panes: ["editor", "viewer"] }, // split view
+      { label: 'layout:viewer', codeView: true, panes: ["viewer"] }, // viewer
+      { label: 'layout:richtext', codeView: false, panes: [""] } // rich text (WYSIWYG)
     ];
 
     async function getAll(path: Path, query: any): Promise<any[]> {
@@ -86,6 +90,9 @@ joplin.plugins.register({
     }
 
     async function toggleVisiblePanes(layout: LayoutType) {
+      console.log(`Toggle layout: ${JSON.stringify(LayoutSpec[layout])}`);
+      const codeView: boolean = await SETTINGS.globalValue('editor.codeView');
+
       for (let i: number = 0; i < 3; i++) {
         if (await layoutMatchesVisiblePanes(layout)) {
           break;
@@ -141,18 +148,23 @@ joplin.plugins.register({
     WORKSPACE.onNoteSelectionChange(async () => {
       try {
         const selectedNote: any = await WORKSPACE.selectedNote();
-        const isCodeEditor: boolean = await SETTINGS.globalValue('editor.codeView');
 
-        if (selectedNote && isCodeEditor) {
+        if (selectedNote) {
           const noteTags = await getAll(['notes', selectedNote.id, 'tags'], { fields: ['id', 'title'], page: 1 });
-          // const tags: any = await DATA.get(['notes', selectedNote.id, 'tags'], { fields: ['title'] });
+          let layout: LayoutType;
 
           if (noteTags.find(x => x.title === LayoutSpec[LayoutType.Editor].label)) {        // editor
-            await toggleVisiblePanes(LayoutType.Editor);
+            layout = LayoutType.Editor;
           } else if (noteTags.find(x => x.title === LayoutSpec[LayoutType.Split].label)) {  // split view
-            await toggleVisiblePanes(LayoutType.Split);
+            layout = LayoutType.Split;
           } else if (noteTags.find(x => x.title === LayoutSpec[LayoutType.Viewer].label)) { // viewer
-            await toggleVisiblePanes(LayoutType.Viewer);
+            layout = LayoutType.Viewer;
+          }
+
+          if (layout) {
+            await toggleVisiblePanes(layout);
+          } else {
+            console.log(`No layout change`);
           }
         }
       } catch (error) {
