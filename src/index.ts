@@ -1,50 +1,61 @@
 import joplin from 'api';
-import { MenuItemLocation, Path } from 'api/types';
+import { MenuItemLocation, Path, SettingItemType } from 'api/types';
+import { ChangeEvent } from 'api/JoplinSettings';
+import { LayoutType, layoutDesc } from './helpers';
 
 joplin.plugins.register({
   onStart: async function () {
     const COMMANDS = joplin.commands;
-    const DATA = joplin.data;
     const SETTINGS = joplin.settings;
     const WORKSPACE = joplin.workspace;
 
+    //#region SETTINGS
+
+    await SETTINGS.registerSection('persistent.layout.settings', {
+      label: 'Persistent Layout',
+      iconName: 'fas fa-columns'
+    });
+
+    // general settings
+    let defaultLayout: LayoutType = LayoutType.None;
+    await joplin.settings.registerSetting('defaultLayout', {
+      value: '0',
+      type: SettingItemType.Int,
+      section: 'persistent.layout.settings',
+      isEnum: true,
+      public: true,
+      label: 'Default editor layout',
+      description: 'Default editor layout which is used for all notes that have no "layout" tags specified. If "None" is selected, the current active is kept.',
+      options: {
+        '0': 'None',
+        '1': 'Editor',
+        '2': 'Split View',
+        '3': 'Viewer',
+        '4': 'Rich Text'
+      },
+    });
+
+    async function readSettings(event?: ChangeEvent) {
+      if (event && event.keys.includes('defaultLayout')) {
+        defaultLayout = await SETTINGS.value('defaultLayout');
+      }
+    }
+
+    SETTINGS.onChange(async (event: ChangeEvent) => {
+      await readSettings(event);
+    });
+
+    //#endregion
+
     //#region HELPERS
-
-    enum LayoutType {
-      None = 0,
-      Editor = 1,
-      Split = 2,
-      Viewer = 3,
-      Richtext = 4 // WYSIWYG
-    }
-
-    /**
-     * Definition of the favorite descriptions.
-     */
-    interface ILayoutSpec {
-      label: string,
-      codeView: boolean,
-      panes: string[]
-    }
-
-    /**
-     * Array of favorite descriptions. Order must match with LayoutType enum.
-     */
-    const LayoutSpec: ILayoutSpec[] = [
-      { label: 'layout:none', codeView: true, panes: [""] }, // no change
-      { label: 'layout:editor', codeView: true, panes: ["editor"] }, // editor
-      { label: 'layout:split', codeView: true, panes: ["editor", "viewer"] }, // split view
-      { label: 'layout:viewer', codeView: true, panes: ["viewer"] }, // viewer
-      { label: 'layout:richtext', codeView: false, panes: [""] } // rich text (WYSIWYG)
-    ];
 
     async function getAll(path: Path, query: any): Promise<any[]> {
       query.page = 1;
-      let response = await DATA.get(path, query);
+      let response = await joplin.data.get(path, query);
       let result = !!response.items ? response.items : [];
       while (!!response.has_more) {
         query.page += 1;
-        let response = await DATA.get(path, query);
+        let response = await joplin.data.get(path, query);
         result.concat(response.items)
       }
       return result;
@@ -52,20 +63,20 @@ joplin.plugins.register({
 
     async function addTag(noteId: string, layout: LayoutType) {
       let layoutTag = (await getAll(['tags'], { fields: ['id', 'title'], page: 1 }))
-        .find(x => x.title == LayoutSpec[layout].label);
+        .find(x => x.title == layoutDesc[layout].label);
 
       if (!layoutTag) {
-        layoutTag = await DATA.post(['tags'], null, { title: LayoutSpec[layout].label });
+        layoutTag = await joplin.data.post(['tags'], null, { title: layoutDesc[layout].label });
       }
-      await DATA.post(['tags', layoutTag.id, 'notes'], null, { id: noteId });
+      await joplin.data.post(['tags', layoutTag.id, 'notes'], null, { id: noteId });
     }
 
     async function removeTag(noteId: string, layout: LayoutType) {
       let layoutTag = (await getAll(['tags'], { fields: ['id', 'title'], page: 1 }))
-        .find(x => x.title == LayoutSpec[layout].label);
+        .find(x => x.title == layoutDesc[layout].label);
 
       if (layoutTag) {
-        await DATA.delete(["tags", layoutTag.id, "notes", noteId]);
+        await joplin.data.delete(["tags", layoutTag.id, "notes", noteId]);
       }
     }
 
@@ -89,26 +100,26 @@ joplin.plugins.register({
 
     function visiblePanesMatchLayout(noteVisiblePanes: any[], layout: LayoutType): boolean {
       // noteVisiblePanes = ["editor","viewer"]
-      return (LayoutSpec[layout].panes.sort().toString() == noteVisiblePanes.sort().toString());
+      return (layoutDesc[layout].panes.sort().toString() == noteVisiblePanes.sort().toString());
     }
 
     async function toggleVisiblePanes(layout: LayoutType) {
-      // console.log(`Toggle layout: ${JSON.stringify(LayoutSpec[layout])}`);
-      const codeView: boolean = await SETTINGS.globalValue('editor.codeView');
+      // console.log(`Toggle layout: ${JSON.stringify(LayoutDesc[layout])}`);
+      const codeView: boolean = await joplin.settings.globalValue('editor.codeView');
 
       // toggle markdown/rich text editor
-      if (LayoutSpec[layout].codeView != codeView) {
-        await COMMANDS.execute('toggleEditors');
+      if (layoutDesc[layout].codeView != codeView) {
+        await joplin.commands.execute('toggleEditors');
       }
 
       // toggle panes for markdown editor
-      if (LayoutSpec[layout].codeView) {
+      if (layoutDesc[layout].codeView) {
         for (let i: number = 0; i < 3; i++) {
-          const visiblePanes: any[] = await SETTINGS.globalValue('noteVisiblePanes');
+          const visiblePanes: any[] = await joplin.settings.globalValue('noteVisiblePanes');
           if (visiblePanesMatchLayout(visiblePanes, layout)) {
             break;
           }
-          await COMMANDS.execute('toggleVisiblePanes');
+          await joplin.commands.execute('toggleVisiblePanes');
         }
       }
     }
@@ -169,15 +180,15 @@ joplin.plugins.register({
 
         if (selectedNote) {
           const noteTags = await getAll(['notes', selectedNote.id, 'tags'], { fields: ['id', 'title'], page: 1 });
-          let layout: LayoutType = LayoutType.None;
+          let layout: LayoutType = defaultLayout;
 
-          if (noteTags.find(x => x.title === LayoutSpec[LayoutType.Editor].label)) {          // editor
+          if (noteTags.find(x => x.title === layoutDesc[LayoutType.Editor].label)) {          // editor
             layout = LayoutType.Editor;
-          } else if (noteTags.find(x => x.title === LayoutSpec[LayoutType.Split].label)) {    // split view
+          } else if (noteTags.find(x => x.title === layoutDesc[LayoutType.Split].label)) {    // split view
             layout = LayoutType.Split;
-          } else if (noteTags.find(x => x.title === LayoutSpec[LayoutType.Viewer].label)) {   // viewer
+          } else if (noteTags.find(x => x.title === layoutDesc[LayoutType.Viewer].label)) {   // viewer
             layout = LayoutType.Viewer;
-          } else if (noteTags.find(x => x.title === LayoutSpec[LayoutType.Richtext].label)) { // rich text
+          } else if (noteTags.find(x => x.title === layoutDesc[LayoutType.Richtext].label)) { // rich text
             layout = LayoutType.Richtext;
           }
 
@@ -192,5 +203,6 @@ joplin.plugins.register({
 
     //#endregion
 
+    await readSettings();
   }
 });
