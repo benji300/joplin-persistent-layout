@@ -2,9 +2,9 @@
 
 Persistent Editor Layout is a plugin to extend the UX of [Joplin's](https://joplinapp.org/) desktop application.
 
-It allows to persist the editor layout (editor/viewer/split view) for each note separately with [special tags](#usage).
+It allows to persist the editor layout for each note separately with [special tags](#usage).
 
-> :warning: **CAUTION** - Requires Joplin **v1.6.8** or newer
+> :warning: **CAUTION** - Requires Joplin **v1.7.4** or newer
 
 ## Table of contents
 
@@ -14,6 +14,7 @@ It allows to persist the editor layout (editor/viewer/split view) for each note 
   - [Persist layout for a note](#persist-layout-for-a-note)
 - [Commands](#commands)
   - [Keyboard shortcuts](#keyboard-shortcuts)
+- [User options](#user-options)
 - [Feedback](#feedback)
 - [Support](#support)
 - [Development](#development)
@@ -22,8 +23,8 @@ It allows to persist the editor layout (editor/viewer/split view) for each note 
 
 ## Features
 
-- Persist the editor layout (`editor / split view / viewer`) for each note
-- Uses [special tags](#persist-layout-for-a-note)
+- Persist the editor layout (`editor / split view / viewer / rich text`) for each note separately
+- Using [special tags](#persist-layout-for-a-note)
   - So persisted layout is synced across devices
   - Requires the plugin to be installed
 
@@ -57,11 +58,12 @@ It allows to persist the editor layout (editor/viewer/split view) for each note 
 
 To persist the layout for a note simply add one of the following tags as specified:
 
-| Tag             | Layout                 |
-| --------------- | ---------------------- |
-| `layout:editor` | Markdown editor view   |
-| `layout:split`  | Split view             |
-| `layout:viewer` | Rendered markdown view |
+| Tag               | Layout                     |
+| ----------------- | -------------------------- |
+| `layout:editor`   | Markdown: editor view      |
+| `layout:split`    | Markdown: Split view       |
+| `layout:viewer`   | Markdown: Rendered view    |
+| `layout:richtext` | Rich text (WYSIWYG) editor |
 
 This can be done by manually adding them to the notes or via the [command](#commands).
 
@@ -69,7 +71,8 @@ This can be done by manually adding them to the notes or via the [command](#comm
   That means, if the tag `layout:viewer` is set in at least one note, the setting must also contain `Viewer`.
   Otherwise layout will not be changed to the expected one.
 - When the selected note is changed, the editor layout is changed also.
-- If none of the tags is specified, the editor layout is not changed. The currently set one will be kept, as before.
+- If none of the tags is specified, the default layout from user option `Default editor layout` will be used.
+  - If `None` is selected, the currently active layout will be kept.
 - If more than one is specified, they are checked in the order above and the first matching one is used.
 
 ## Commands
@@ -84,6 +87,10 @@ This plugin provides additional commands as described in the following table.
 
 Keyboard shortcuts can be assigned in user options via `Tools > Options > Keyboard Shortcuts` to all [commands](#commands) which are assigned to the `Tools` menu context.
 In the keyboard shortcut editor, search for the command label where shortcuts shall be added.
+
+## User options
+
+This plugin adds provides user options which can be changed via `Tools > Options > Persistent Layout`.
 
 ## Feedback
 
