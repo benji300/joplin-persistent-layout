@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- None
+
+## [1.1.0] - 2021-02-01
+
 ### Added
 
 - User option to specify default editor layout ([#3](https://github.com/benji300/joplin-persistent-layout/issues/3))
