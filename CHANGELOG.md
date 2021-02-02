@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- None
+### Fixed
+
+- Default layout not considered at startup ([#6](https://github.com/benji300/joplin-persistent-layout/issues/6))
 
 ## [1.1.0] - 2021-02-01
 

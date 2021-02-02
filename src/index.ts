@@ -36,7 +36,7 @@ joplin.plugins.register({
     });
 
     async function readSettings(event?: ChangeEvent) {
-      if (event && event.keys.includes('defaultLayout')) {
+      if ((!event) || event.keys.includes('defaultLayout')) {
         defaultLayout = await SETTINGS.value('defaultLayout');
       }
     }
