@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - None
 
+## [1.1.2] - 2021-02-10
+
+### Added
+
+- Command `persistEditorLayout` to editor context menu
+
 ## [1.1.1] - 2021-02-02
 
 ### Fixed

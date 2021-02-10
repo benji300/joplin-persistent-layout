@@ -79,9 +79,9 @@ This can be done by manually adding them to the notes or via the [command](#comm
 
 This plugin provides additional commands as described in the following table.
 
-| Command Label         | Command ID            | Description                                                       | Menu contexts                                 |
-| --------------------- | --------------------- | ----------------------------------------------------------------- | --------------------------------------------- |
-| Persist editor layout | `persistEditorLayout` | Persist the current active editor layout for the selected note(s) | `Tools`, `NoteListContext`, `Command palette` |
+| Command Label         | Command ID            | Description                                                       | Menu contexts                                                  |
+| --------------------- | --------------------- | ----------------------------------------------------------------- | -------------------------------------------------------------- |
+| Persist editor layout | `persistEditorLayout` | Persist the current active editor layout for the selected note(s) | `Tools`, `NoteListContext`, `EditorContext`, `Command palette` |
 
 ### Keyboard shortcuts
 

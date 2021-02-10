@@ -170,6 +170,9 @@ joplin.plugins.register({
     // add commands to notes context menu
     await joplin.views.menuItems.create('notesContextPersist', 'persistEditorLayout', MenuItemLocation.NoteListContextMenu);
 
+    // add commands to editor context menu
+    await joplin.views.menuItems.create('editorContextPersist', 'persistEditorLayout', MenuItemLocation.EditorContextMenu);
+
     //#endregion
 
     //#region WORKSPACE
