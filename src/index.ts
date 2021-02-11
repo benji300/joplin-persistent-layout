@@ -104,11 +104,13 @@ joplin.plugins.register({
     }
 
     async function toggleVisiblePanes(layout: LayoutType) {
-      // console.log(`Toggle layout: ${JSON.stringify(LayoutDesc[layout])}`);
+      console.debug(`Toggle layout: ${layout}`);
       const codeView: boolean = await joplin.settings.globalValue('editor.codeView');
+      console.debug(`codeView: ${codeView}`);
 
       // toggle markdown/rich text editor
       if (layoutDesc[layout].codeView != codeView) {
+        console.debug(`toggleEditors`);
         await joplin.commands.execute('toggleEditors');
       }
 
@@ -116,6 +118,7 @@ joplin.plugins.register({
       if (layoutDesc[layout].codeView) {
         for (let i: number = 0; i < 3; i++) {
           const visiblePanes: any[] = await joplin.settings.globalValue('noteVisiblePanes');
+          console.debug(`noteVisiblePanes: ${visiblePanes}`);
           if (visiblePanesMatchLayout(visiblePanes, layout)) {
             break;
           }
@@ -184,6 +187,8 @@ joplin.plugins.register({
         if (selectedNote) {
           const noteTags = await getAll(['notes', selectedNote.id, 'tags'], { fields: ['id', 'title'], page: 1 });
           let layout: LayoutType = defaultLayout;
+          console.debug(`onNoteSelectionChange->selectedNote:${selectedNote.title}`);
+          console.debug(`onNoteSelectionChange->selectedNote->tags:${JSON.stringify(noteTags)}`);
 
           if (noteTags.find(x => x.title === layoutDesc[LayoutType.Editor].label)) {          // editor
             layout = LayoutType.Editor;
