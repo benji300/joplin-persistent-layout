@@ -165,7 +165,7 @@ joplin.plugins.register({
     });
 
     // add commands to menu
-    await joplin.views.menuItems.create('toolsPersist', 'persistEditorLayout', MenuItemLocation.Tools);
+    await joplin.views.menuItems.create('toolsPersist', 'persistEditorLayout', MenuItemLocation.Note);
 
     // add commands to notes context menu
     await joplin.views.menuItems.create('notesContextPersist', 'persistEditorLayout', MenuItemLocation.NoteListContextMenu);

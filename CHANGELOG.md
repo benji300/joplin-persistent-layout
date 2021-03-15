@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- None
+### Changed
+
+- Menu location of `persistEditorLayout` command to `Note`
 
 ## [1.1.2] - 2021-02-10
 
