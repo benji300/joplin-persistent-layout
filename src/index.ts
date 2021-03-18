@@ -54,8 +54,9 @@ joplin.plugins.register({
       let response = await joplin.data.get(path, query);
       let result = !!response.items ? response.items : [];
       while (!!response.has_more) {
+        console.log('has_more');
         query.page += 1;
-        let response = await joplin.data.get(path, query);
+        response = await joplin.data.get(path, query);
         result.concat(response.items)
       }
       return result;
