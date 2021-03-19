@@ -81,7 +81,7 @@ This plugin provides additional commands as described in the following table.
 
 | Command Label         | Command ID            | Description                                                       | Menu contexts                                                  |
 | --------------------- | --------------------- | ----------------------------------------------------------------- | -------------------------------------------------------------- |
-| Persist editor layout | `persistEditorLayout` | Persist the current active editor layout for the selected note(s) | `Tools`, `NoteListContext`, `EditorContext`, `Command palette` |
+| Persist editor layout | `persistEditorLayout` | Persist the current active editor layout for the selected note(s) | `Note`, `NoteListContext`, `EditorContext`, `Command palette` |
 
 ### Keyboard shortcuts
 
