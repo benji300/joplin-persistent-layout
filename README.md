@@ -25,8 +25,7 @@ It allows to persist the editor layout for each note separately with [special ta
 
 - Persist the editor layout (`editor / split view / viewer / rich text`) for each note separately
 - Using [special tags](#persist-layout-for-a-note)
-  - So persisted layout is synced across devices
-  - Requires the plugin to be installed
+  - So persisted layout is synced across (desktop) devices, if the plugin is installed
 
 ## Installation
 
@@ -68,12 +67,12 @@ To persist the layout for a note simply add one of the following tags as specifi
 This can be done by manually adding them to the notes or via the [command](#commands).
 
 - **The setting `View > Layout button sequence` must be set according to the tags used.**
-  That means, if the tag `layout:viewer` is set in at least one note, the setting must also contain `Viewer`.
-  Otherwise layout will not be changed to the expected one.
-- When the selected note is changed, the editor layout is changed also.
-- If none of the tags is specified, the default layout from user option `Default editor layout` will be used.
-  - If `None` is selected, the currently active layout will be kept.
-- If more than one is specified, they are checked in the order above and the first matching one is used.
+  - That means, if the tag `layout:viewer` is set in at least one note, the setting must also contain `Viewer`.
+  - Otherwise the editor layout will not be changed to the expected one.
+- When the selected note is changed, the editor layout is also changed.
+- If none of the tags is specified, the default layout from the option `Default editor layout` will be used.
+  - If `None` is selected, the currently active editor layout will be kept.
+- If more than one tag is specified for a note, the first matching one is used. Depending on the above specified order.
 
 ## Commands
 
@@ -85,7 +84,7 @@ This plugin provides additional commands as described in the following table.
 
 ### Keyboard shortcuts
 
-Keyboard shortcuts can be assigned in user options via `Tools > Options > Keyboard Shortcuts` to all [commands](#commands) which are assigned to the `Tools` menu context.
+Keyboard shortcuts can be assigned in user options via `Tools > Options > Keyboard Shortcuts` to all [commands](#commands) which are assigned to the `Note` menu context.
 In the keyboard shortcut editor, search for the command label where shortcuts shall be added.
 
 ## User options
