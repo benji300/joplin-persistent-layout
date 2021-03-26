@@ -104,7 +104,7 @@ This plugin adds provides user options which can be changed via `Tools > Options
 
 You like this plugin as much as I do and it improves your daily work with Joplin?
 
-Then I would be very happy if you buy me a beer via [PayPal](https://www.paypal.com/donate?hosted_button_id=6FHDGK3PTNU22) :wink::beer:
+Then I would be very happy if you buy me a :beer: or ☕ via [PayPal](https://www.paypal.com/donate?hosted_button_id=6FHDGK3PTNU22) :wink:
 
 ## Development
 
