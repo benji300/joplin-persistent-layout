@@ -46,7 +46,7 @@ To persist the layout for a note simply add one of the following tags as specifi
 | `layout:viewer`   | Markdown: Rendered view    |
 | `layout:richtext` | Rich text (WYSIWYG) editor |
 
-This can be done by manually adding them to the notes or via the [command](#commands).
+This can be done by manually adding them to the notes.
 
 - **The setting `View > Layout button sequence` must be set according to the tags used.**
   - That means, if the tag `layout:viewer` is set in at least one note, the setting must also contain `Viewer`.
@@ -58,16 +58,7 @@ This can be done by manually adding them to the notes or via the [command](#comm
 
 ## Commands
 
-This plugin provides additional commands as described in the following table.
-
-| Command Label         | Command ID            | Description                                                       | Menu contexts                                                  |
-| --------------------- | --------------------- | ----------------------------------------------------------------- | -------------------------------------------------------------- |
-| Persist editor layout | `persistEditorLayout` | Persist the current active editor layout for the selected note(s) | `Note`, `NoteListContext`, `EditorContext`, `Command palette` |
-
-### Keyboard shortcuts
-
-Keyboard shortcuts can be assigned in user options via `Tools > Options > Keyboard Shortcuts` to all [commands](#commands) which are assigned to the `Note` menu context.
-In the keyboard shortcut editor, search for the command label where shortcuts shall be added.
+This plugin does not provide any commands.
 
 ## User options
 

@@ -25,7 +25,7 @@ export interface ILayoutDesc {
 /**
  * Array of layout descriptions. Order must match with LayoutType enum.
  */
-export const layoutDesc: ILayoutDesc[] = [
+export const LayoutDesc: ILayoutDesc[] = [
   { label: 'layout:none', codeView: true, panes: [""] }, // no change
   { label: 'layout:editor', codeView: true, panes: ["editor"] }, // editor
   { label: 'layout:split', codeView: true, panes: ["editor", "viewer"] }, // split view
