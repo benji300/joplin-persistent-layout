@@ -1,13 +1,4 @@
-/**
- * Layout type definitions.
- */
-export enum LayoutType {
-  None = 0,
-  Editor = 1,
-  Split = 2,
-  Viewer = 3,
-  Richtext = 4 // WYSIWYG
-}
+
 
 /**
  * Definition of the layout description.

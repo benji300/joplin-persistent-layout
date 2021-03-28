@@ -1,51 +1,17 @@
 import joplin from 'api';
-import { MenuItemLocation, Path, SettingItemType } from 'api/types';
+import { MenuItemLocation, Path } from 'api/types';
 import { ChangeEvent } from 'api/JoplinSettings';
-import { LayoutType, layoutDesc } from './helpers';
+import { LayoutType, Settings } from './settings';
+import { layoutDesc } from './helpers';
 
 joplin.plugins.register({
   onStart: async function () {
     const COMMANDS = joplin.commands;
     const SETTINGS = joplin.settings;
     const WORKSPACE = joplin.workspace;
-
-    //#region SETTINGS
-
-    await SETTINGS.registerSection('persistent.layout.settings', {
-      label: 'Persistent Layout',
-      iconName: 'fas fa-columns'
-    });
-
-    // general settings
-    let defaultLayout: LayoutType = LayoutType.None;
-    await joplin.settings.registerSetting('defaultLayout', {
-      value: '0',
-      type: SettingItemType.Int,
-      section: 'persistent.layout.settings',
-      isEnum: true,
-      public: true,
-      label: 'Default editor layout',
-      description: 'Default editor layout which is used for all notes that have no "layout" tags specified. If "None" is selected, the current active is kept.',
-      options: {
-        '0': 'None',
-        '1': 'Editor',
-        '2': 'Split View',
-        '3': 'Viewer',
-        '4': 'Rich Text'
-      },
-    });
-
-    async function readSettings(event?: ChangeEvent) {
-      if ((!event) || event.keys.includes('defaultLayout')) {
-        defaultLayout = await SETTINGS.value('defaultLayout');
-      }
-    }
-
-    SETTINGS.onChange(async (event: ChangeEvent) => {
-      await readSettings(event);
-    });
-
-    //#endregion
+    // settings
+    const settings: Settings = new Settings();
+    await settings.register();
 
     //#region HELPERS
 
@@ -106,7 +72,7 @@ joplin.plugins.register({
 
     async function toggleVisiblePanes(layout: LayoutType) {
       // console.log(`Toggle layout: ${JSON.stringify(LayoutDesc[layout])}`);
-      const codeView: boolean = await joplin.settings.globalValue('editor.codeView');
+      const codeView: boolean = await settings.editorCodeView;;
 
       // toggle markdown/rich text editor
       if (layoutDesc[layout].codeView != codeView) {
@@ -116,7 +82,7 @@ joplin.plugins.register({
       // toggle panes for markdown editor
       if (layoutDesc[layout].codeView) {
         for (let i: number = 0; i < 3; i++) {
-          const visiblePanes: any[] = await joplin.settings.globalValue('noteVisiblePanes');
+          const visiblePanes: any[] = await settings.noteVisiblePanes;
           if (visiblePanesMatchLayout(visiblePanes, layout)) {
             break;
           }
@@ -142,8 +108,8 @@ joplin.plugins.register({
         if (!selectedNoteIds) selectedNoteIds = await WORKSPACE.selectedNoteIds();
         if (!selectedNoteIds) return;
 
-        const codeView: boolean = await SETTINGS.globalValue('editor.codeView');
-        const noteVisiblePanes: any[] = await SETTINGS.globalValue('noteVisiblePanes');
+        const codeView: boolean = await settings.editorCodeView;
+        const noteVisiblePanes: any[] = await settings.noteVisiblePanes;
         const editor: boolean = visiblePanesMatchLayout(noteVisiblePanes, LayoutType.Editor);
         const split: boolean = visiblePanesMatchLayout(noteVisiblePanes, LayoutType.Split);
         const viewer: boolean = visiblePanesMatchLayout(noteVisiblePanes, LayoutType.Viewer);
@@ -176,7 +142,7 @@ joplin.plugins.register({
 
     //#endregion
 
-    //#region WORKSPACE
+    //#region EVENTS
 
     WORKSPACE.onNoteSelectionChange(async () => {
       try {
@@ -184,7 +150,7 @@ joplin.plugins.register({
 
         if (selectedNote) {
           const noteTags = await getAll(['notes', selectedNote.id, 'tags'], { fields: ['id', 'title'], page: 1 });
-          let layout: LayoutType = defaultLayout;
+          let layout: LayoutType = settings.defaultLayout;
 
           if (noteTags.find(x => x.title === layoutDesc[LayoutType.Editor].label)) {          // editor
             layout = LayoutType.Editor;
@@ -205,8 +171,12 @@ joplin.plugins.register({
       }
     });
 
-    //#endregion
+    // let onChangeCnt = 0;
+    SETTINGS.onChange(async (event: ChangeEvent) => {
+      // console.debug(`onChange() hits: ${onChangeCnt++}`);
+      await settings.read(event);
+    });
 
-    await readSettings();
+    //#endregion
   }
 });
