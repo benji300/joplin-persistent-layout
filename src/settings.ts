@@ -73,19 +73,19 @@ export class Settings {
   }
 
   get editorTags(): string[] {
-    return this._editorTags.trim().replace('/s+', '').split(',');
+    return this._editorTags.trim().toLocaleLowerCase().replace('/s+', '').split(',');
   }
 
   get splitTags(): string[] {
-    return this._splitTags.trim().replace('/s+', '').split(',');
+    return this._splitTags.trim().toLocaleLowerCase().replace('/s+', '').split(',');
   }
 
   get viewerTags(): string[] {
-    return this._viewerTags.trim().replace('/s+', '').split(',');
+    return this._viewerTags.trim().toLocaleLowerCase().replace('/s+', '').split(',');
   }
 
   get richtextTags(): string[] {
-    return this._richtextTags.trim().replace('/s+', '').split(',');
+    return this._richtextTags.trim().toLocaleLowerCase().replace('/s+', '').split(',');
   }
 
   //#endregion
@@ -133,37 +133,37 @@ export class Settings {
         '4': 'Rich Text'
       },
     });
-
     await joplin.settings.registerSetting('editorTags', {
       value: this._editorTags,
       type: SettingItemType.String,
       section: 'persistent.layout.settings',
       public: true,
-      label: 'Tags for editor layout mode: Markdown editor view'
+      label: 'Tags for editor layout mode: Markdown editor',
+      description: 'Specify as comma-separated list.'
     });
-
     await joplin.settings.registerSetting('splitTags', {
-      value: this._editorTags,
+      value: this._splitTags,
       type: SettingItemType.String,
       section: 'persistent.layout.settings',
       public: true,
-      label: 'Tags for editor layout mode: Split view'
+      label: 'Tags for editor layout mode: Split view',
+      description: 'Specify as comma-separated list.'
     });
-
     await joplin.settings.registerSetting('viewerTags', {
-      value: this._editorTags,
+      value: this._viewerTags,
       type: SettingItemType.String,
       section: 'persistent.layout.settings',
       public: true,
-      label: 'Tags for editor layout mode: Rendered Markdown view'
+      label: 'Tags for editor layout mode: Rendered Markdown',
+      description: 'Specify as comma-separated list.'
     });
-
     await joplin.settings.registerSetting('richtextTags', {
-      value: this._editorTags,
+      value: this._richtextTags,
       type: SettingItemType.String,
       section: 'persistent.layout.settings',
       public: true,
-      label: 'Tags for editor layout mode: Rich text (WYSIWYG)'
+      label: 'Tags for editor layout mode: Rich text (WYSIWYG)',
+      description: 'Specify as comma-separated list.'
     });
 
     // advanced settings
