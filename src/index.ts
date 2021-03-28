@@ -1,8 +1,8 @@
 import joplin from 'api';
 import { MenuItemLocation, Path } from 'api/types';
 import { ChangeEvent } from 'api/JoplinSettings';
-import { LayoutType, Settings } from './settings';
-import { layoutDesc } from './helpers';
+import { LayoutType, layoutDesc, Settings } from './settings';
+import { DA } from './data';
 
 joplin.plugins.register({
   onStart: async function () {
@@ -72,7 +72,7 @@ joplin.plugins.register({
 
     async function toggleVisiblePanes(layout: LayoutType) {
       // console.log(`Toggle layout: ${JSON.stringify(LayoutDesc[layout])}`);
-      const codeView: boolean = await settings.editorCodeView;;
+      const codeView: boolean = await settings.editorCodeView;
 
       // toggle markdown/rich text editor
       if (layoutDesc[layout].codeView != codeView) {
@@ -149,7 +149,7 @@ joplin.plugins.register({
         const selectedNote: any = await WORKSPACE.selectedNote();
 
         if (selectedNote) {
-          const noteTags = await getAll(['notes', selectedNote.id, 'tags'], { fields: ['id', 'title'], page: 1 });
+          const noteTags = await DA.getTagsOfNote(selectedNote.id);
           let layout: LayoutType = settings.defaultLayout;
 
           if (noteTags.find(x => x.title === layoutDesc[LayoutType.Editor].label)) {          // editor

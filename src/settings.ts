@@ -14,20 +14,36 @@ export enum LayoutType {
 }
 
 /**
+ * Definition of the layout description.
+ */
+export interface ILayoutDesc {
+  label: string,
+  codeView: boolean,
+  panes: string[]
+}
+
+/**
+ * Array of layout descriptions. Order must match with LayoutType enum.
+ */
+export const layoutDesc: ILayoutDesc[] = [
+  { label: 'layout:none', codeView: true, panes: [""] }, // no change
+  { label: 'layout:editor', codeView: true, panes: ["editor"] }, // editor
+  { label: 'layout:split', codeView: true, panes: ["editor", "viewer"] }, // split view
+  { label: 'layout:viewer', codeView: true, panes: ["viewer"] }, // viewer
+  { label: 'layout:richtext', codeView: false, panes: [""] } // rich text (WYSIWYG)
+];
+
+/**
  * Advanced style setting default values.
  * Used when setting is set to 'default'.
  */
 export enum SettingDefaults {
   Empty = '0',
   Default = 'default',
-  FontFamily = 'Roboto',
-  FontSize = 'var(--joplin-font-size)',
-  Background = 'var(--joplin-background-color3)',
-  HoverBackground = 'var(--joplin-background-color-hover3)', // var(--joplin-background-hover)
-  Foreground = 'var(--joplin-color-faded)',
-  ActiveBackground = 'var(--joplin-background-color)',
-  ActiveForeground = 'var(--joplin-color)',
-  DividerColor = 'var(--joplin-divider-color)'
+  Editor = 'layout:editor',
+  Split = 'layout:split',
+  Viewer = 'layout:viewer',
+  Richtext = 'layout:richtext'
 }
 
 /**
@@ -38,7 +54,10 @@ export class Settings {
   // none
   // general settings
   private _defaultLayout: LayoutType = LayoutType.None;
-  // private _quickMove1: string = SettingDefaults.Empty;
+  private _editorTags: string = SettingDefaults.Editor;
+  private _splitTags: string = SettingDefaults.Split;
+  private _viewerTags: string = SettingDefaults.Viewer;
+  private _richtextTags: string = SettingDefaults.Richtext;
   // advanced settings
   // none
   // internals
@@ -53,9 +72,21 @@ export class Settings {
     return this._defaultLayout;
   }
 
-  // get quickMove1(): string {
-  //   return this._quickMove1;
-  // }
+  get editorTags(): string[] {
+    return this._editorTags.trim().replace('/s+', '').split(',');
+  }
+
+  get splitTags(): string[] {
+    return this._splitTags.trim().replace('/s+', '').split(',');
+  }
+
+  get viewerTags(): string[] {
+    return this._viewerTags.trim().replace('/s+', '').split(',');
+  }
+
+  get richtextTags(): string[] {
+    return this._richtextTags.trim().replace('/s+', '').split(',');
+  }
 
   //#endregion
 
@@ -103,14 +134,37 @@ export class Settings {
       },
     });
 
-    // await joplin.settings.registerSetting('quickMove1', {
-    //   value: this._quickMove1,
-    //   type: SettingItemType.String,
-    //   section: 'qm.settings',
-    //   public: true,
-    //   label: 'Notebook for quick move action 1',
-    //   description: 'Select notebook to which the selected note(s) can be moved directly without interaction. Assign keyboard shortcut to command "quickMove1".'
-    // });
+    await joplin.settings.registerSetting('editorTags', {
+      value: this._editorTags,
+      type: SettingItemType.String,
+      section: 'persistent.layout.settings',
+      public: true,
+      label: 'Tags for editor layout mode: Markdown editor view'
+    });
+
+    await joplin.settings.registerSetting('splitTags', {
+      value: this._editorTags,
+      type: SettingItemType.String,
+      section: 'persistent.layout.settings',
+      public: true,
+      label: 'Tags for editor layout mode: Split view'
+    });
+
+    await joplin.settings.registerSetting('viewerTags', {
+      value: this._editorTags,
+      type: SettingItemType.String,
+      section: 'persistent.layout.settings',
+      public: true,
+      label: 'Tags for editor layout mode: Rendered Markdown view'
+    });
+
+    await joplin.settings.registerSetting('richtextTags', {
+      value: this._editorTags,
+      type: SettingItemType.String,
+      section: 'persistent.layout.settings',
+      public: true,
+      label: 'Tags for editor layout mode: Rich text (WYSIWYG)'
+    });
 
     // advanced settings
     // none
@@ -137,6 +191,9 @@ export class Settings {
    */
   async read(event?: ChangeEvent) {
     this._defaultLayout = await this.getOrDefault(event, this._defaultLayout, 'defaultLayout');
-    // this._quickMove1 = await this.getOrDefault(event, this._quickMove1, 'quickMove1');
+    this._editorTags = await this.getOrDefault(event, this._editorTags, 'editorTags');
+    this._splitTags = await this.getOrDefault(event, this._splitTags, 'splitTags');
+    this._viewerTags = await this.getOrDefault(event, this._viewerTags, 'viewerTags');
+    this._richtextTags = await this.getOrDefault(event, this._richtextTags, 'richtextTags');
   }
 }
