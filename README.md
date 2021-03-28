@@ -11,7 +11,6 @@ It allows to persist the editor layout for each note separately with [special ta
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-  - [Persist layout for a note](#persist-layout-for-a-note)
 - [Commands](#commands)
   - [Keyboard shortcuts](#keyboard-shortcuts)
 - [User options](#user-options)
@@ -32,7 +31,7 @@ It allows to persist the editor layout for each note separately with [special ta
 ### Automatic (Joplin v1.6.4 and newer)
 
 - Open Joplin and navigate to `Tools > Options > Plugins`
-- Search for `persistent editor layout` and press install
+- Search for the plugin name and press install
 - Restart Joplin to enable the plugin
 
 ### Manual
@@ -46,14 +45,11 @@ It allows to persist the editor layout for each note separately with [special ta
 ### Uninstall
 
 - Open Joplin and navigate to `Tools > Options > Plugins`
-- Search for the `Persistent Editor Layout` plugin
-- Press `Delete` to remove the plugin completely
+- Search for the plugin name and press `Delete` to remove the plugin completely
   - Alternatively you can also disable the plugin by clicking on the toggle button
 - Restart Joplin
 
 ## Usage
-
-### Persist layout for a note
 
 To persist the layout for a note simply add one of the following tags as specified:
 
@@ -89,7 +85,7 @@ In the keyboard shortcut editor, search for the command label where shortcuts sh
 
 ## User options
 
-This plugin adds provides user options which can be changed via `Tools > Options > Persistent Layout`.
+This plugin adds provides user options which can be changed via `Tools > Options > Persistent Layout` (Windows App).
 
 ## Feedback
 
@@ -104,7 +100,7 @@ This plugin adds provides user options which can be changed via `Tools > Options
 
 You like this plugin as much as I do and it improves your daily work with Joplin?
 
-Then I would be very happy if you buy me a :beer: or ☕ via [PayPal](https://www.paypal.com/donate?hosted_button_id=6FHDGK3PTNU22) :wink:
+Then I would be very happy if you buy me a :beer: or :coffee: via [PayPal](https://www.paypal.com/donate?hosted_button_id=6FHDGK3PTNU22) :wink:
 
 ## Development
 
