@@ -6,20 +6,6 @@ It allows to persist the editor layout for each note separately with [special ta
 
 > :warning: **CAUTION** - Requires Joplin **v1.7.4** or newer
 
-## Table of contents
-
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Commands](#commands)
-  - [Keyboard shortcuts](#keyboard-shortcuts)
-- [User options](#user-options)
-- [Feedback](#feedback)
-- [Support](#support)
-- [Development](#development)
-- [Changes](#changes)
-- [License](#license)
-
 ## Features
 
 - Persist the editor layout (`editor / split view / viewer / rich text`) for each note separately
