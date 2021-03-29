@@ -37,24 +37,31 @@ It allows to persist the editor layout for each note separately with [custom tag
 
 ## Usage
 
-To persist the layout for a note simply add one of the following tags as specified:
+To persist the layout for a note follow these steps:
 
-| Tag               | Layout                     |
-| ----------------- | -------------------------- |
-| `layout:editor`   | Markdown: editor view      |
-| `layout:split`    | Markdown: Split view       |
-| `layout:viewer`   | Markdown: Rendered view    |
-| `layout:richtext` | Rich text (WYSIWYG) editor |
+1. Specify the tags for which a specific layout should be used.
 
-This can be done by manually adding them to the notes.
+   - To do this, go to the plugin's settings page and add the desired tags in the settings.
 
-- **The setting `View > Layout button sequence` must be set according to the tags used.**
-  - That means, if the tag `layout:viewer` is set in at least one note, the setting must also contain `Viewer`.
-  - Otherwise the editor layout will not be changed to the expected one.
-- When the selected note is changed, the editor layout is also changed.
-- If none of the tags is specified, the default layout from the option `Default editor layout` is be used.
-  - If `None` is selected, the currently active editor layout will be kept.
-- If more than one tag is specified for a note, the first matching one is used. Depending on the above specified order.
+   - An example configuration could like this:
+
+     ![layout-tags-config](./assets/tags-config.png)
+
+1. Make sure that the correct value is selected in `View > Layout button sequence`.
+
+   - To be able to use the layout switching correctly, this setting must be set accordingly. Otherwise the editor layout might not be switched to the expected one.
+
+   - For example: If a tag is specified in option `Tags for editor layout mode: Rendered Markdown viewer` and least one note uses it, the setting must also contain `Viewer`.
+
+1. Add the appropriate tags to the notes. If not already done.
+
+   - When the selected note is changed, the editor layout is switched.
+
+   - If none of the selected note's tags matches a specified layout tag, the default layout from the option `Default editor layout` is used.
+
+     - If nothing is selected as default editor layout, the currently active editor layout will be kept.
+
+   - If more than one tag is specified for a note, the first matching one is used.
 
 ## Commands
 

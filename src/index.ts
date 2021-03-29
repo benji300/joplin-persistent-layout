@@ -13,6 +13,10 @@ joplin.plugins.register({
 
     //#region HELPERS
 
+    function checkMatchingTags(noteTags: any[], layoutTags: string[]): boolean {
+      return (noteTags.findIndex(tag => layoutTags.includes(tag.title)) >= 0);
+    }
+
     function visiblePanesMatchLayout(noteVisiblePanes: any[], layout: LayoutType): boolean {
       // noteVisiblePanes = ["editor","viewer"]
       return (LayoutDesc[layout].panes.sort().toString() == noteVisiblePanes.sort().toString());
@@ -46,14 +50,6 @@ joplin.plugins.register({
     //#endregion
 
     //#region EVENTS
-
-    function checkMatchingTags(noteTags: any[], layoutTags: string[]): boolean {
-      return (noteTags.findIndex(tag => layoutTags.includes(tag.title)) >= 0);
-      // for (const noteTag of noteTags) {
-      //   return (layoutTags.includes(noteTag.title));
-      // };
-      // return false;
-    }
 
     WORKSPACE.onNoteSelectionChange(async () => {
       try {

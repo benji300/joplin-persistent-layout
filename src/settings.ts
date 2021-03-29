@@ -67,19 +67,14 @@ export class Settings {
   constructor() {
   }
 
+  private asArray(tags: string): string[] {
+    return tags.trim().replace(this._whiteSpaceRegExp, '').toLocaleLowerCase().split(',');
+  }
+
   //#region GETTER
 
   get defaultLayout(): LayoutType {
     return this._defaultLayout;
-  }
-
-  private asArray(tags: string): string[] {
-    return tags.trim().replace(this._whiteSpaceRegExp, '').toLocaleLowerCase().split(',');
-    // const arr: string[] = [];
-    // for (const tag of tags.trim().split(',')) {
-    //   arr.push(tag.trim().toLocaleLowerCase());
-    // }
-    // return arr;
   }
 
   get editorTags(): string[] {
@@ -164,7 +159,7 @@ export class Settings {
       type: SettingItemType.String,
       section: 'persistent.layout.settings',
       public: true,
-      label: 'Tags for editor layout mode: Rendered Markdown',
+      label: 'Tags for editor layout mode: Rendered Markdown viewer',
       description: 'Specify as comma-separated list.'
     });
     await joplin.settings.registerSetting('richtextTags', {
