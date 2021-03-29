@@ -41,7 +41,7 @@ To persist the layout for a note follow these steps:
 
 1. Specify the tags for which a specific layout should be used.
 
-   - To do this, go to the plugin's settings page and add the desired tags in the settings.
+   - To do this, go to the plugin's settings/options page and add the tags to the settings.
 
    - An example configuration could like this:
 
