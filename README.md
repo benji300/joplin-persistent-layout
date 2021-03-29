@@ -2,14 +2,14 @@
 
 Persistent Editor Layout is a plugin to extend the UX of [Joplin's](https://joplinapp.org/) desktop application.
 
-It allows to persist the editor layout for each note separately with [special tags](#usage).
+It allows to persist the editor layout for each note separately with [user defined tags](#usage).
 
 > :warning: **CAUTION** - Requires Joplin **v1.7.4** or newer
 
 ## Features
 
 - Persist the editor layout (`editor / split view / viewer / rich text`) for each note separately
-- Using [special tags](#persist-layout-for-a-note)
+- Using [user defined tags](#usage)
   - So persisted layout is synced across (desktop) devices, if the plugin is installed
 
 ## Installation
@@ -52,7 +52,7 @@ This can be done by manually adding them to the notes.
   - That means, if the tag `layout:viewer` is set in at least one note, the setting must also contain `Viewer`.
   - Otherwise the editor layout will not be changed to the expected one.
 - When the selected note is changed, the editor layout is also changed.
-- If none of the tags is specified, the default layout from the option `Default editor layout` will be used.
+- If none of the tags is specified, the default layout from the option `Default editor layout` is be used.
   - If `None` is selected, the currently active editor layout will be kept.
 - If more than one tag is specified for a note, the first matching one is used. Depending on the above specified order.
 

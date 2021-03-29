@@ -47,6 +47,14 @@ joplin.plugins.register({
 
     //#region EVENTS
 
+    function checkMatchingTags(noteTags: any[], layoutTags: string[]): boolean {
+      return (noteTags.findIndex(tag => layoutTags.includes(tag.title)) >= 0);
+      // for (const noteTag of noteTags) {
+      //   return (layoutTags.includes(noteTag.title));
+      // };
+      // return false;
+    }
+
     WORKSPACE.onNoteSelectionChange(async () => {
       try {
         const selectedNote: any = await WORKSPACE.selectedNote();
@@ -55,15 +63,13 @@ joplin.plugins.register({
           const noteTags: any[] = await DA.getTagsOfNote(selectedNote.id);
           let layout: LayoutType = settings.defaultLayout;
 
-          // TODO check if any of the noteTags matches with the configured layoutTags
-          // TODO create method checkMatchingTags(noteTags, layoutTags);
-          if (noteTags.find(x => x.title === LayoutDesc[LayoutType.Editor].label)) {          // editor
+          if (checkMatchingTags(noteTags, settings.editorTags)) {          // editor
             layout = LayoutType.Editor;
-          } else if (noteTags.find(x => x.title === LayoutDesc[LayoutType.Split].label)) {    // split view
+          } else if (checkMatchingTags(noteTags, settings.splitTags)) {    // split view
             layout = LayoutType.Split;
-          } else if (noteTags.find(x => x.title === LayoutDesc[LayoutType.Viewer].label)) {   // viewer
+          } else if (checkMatchingTags(noteTags, settings.viewerTags)) {   // viewer
             layout = LayoutType.Viewer;
-          } else if (noteTags.find(x => x.title === LayoutDesc[LayoutType.Richtext].label)) { // rich text
+          } else if (checkMatchingTags(noteTags, settings.richtextTags)) { // rich text
             layout = LayoutType.Richtext;
           }
 

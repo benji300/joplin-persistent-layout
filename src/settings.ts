@@ -61,7 +61,8 @@ export class Settings {
   // advanced settings
   // none
   // internals
-  private _defaultRegExp: RegExp = new RegExp(SettingDefaults.Default, "i");
+  private _defaultRegExp: RegExp = new RegExp(SettingDefaults.Default, 'i');
+  private _whiteSpaceRegExp: RegExp = new RegExp(/\s/, 'gi');
 
   constructor() {
   }
@@ -72,20 +73,29 @@ export class Settings {
     return this._defaultLayout;
   }
 
+  private asArray(tags: string): string[] {
+    return tags.trim().replace(this._whiteSpaceRegExp, '').toLocaleLowerCase().split(',');
+    // const arr: string[] = [];
+    // for (const tag of tags.trim().split(',')) {
+    //   arr.push(tag.trim().toLocaleLowerCase());
+    // }
+    // return arr;
+  }
+
   get editorTags(): string[] {
-    return this._editorTags.trim().toLocaleLowerCase().replace('/s+', '').split(',');
+    return this.asArray(this._editorTags);
   }
 
   get splitTags(): string[] {
-    return this._splitTags.trim().toLocaleLowerCase().replace('/s+', '').split(',');
+    return this.asArray(this._splitTags);
   }
 
   get viewerTags(): string[] {
-    return this._viewerTags.trim().toLocaleLowerCase().replace('/s+', '').split(',');
+    return this.asArray(this._viewerTags);
   }
 
   get richtextTags(): string[] {
-    return this._richtextTags.trim().toLocaleLowerCase().replace('/s+', '').split(',');
+    return this.asArray(this._richtextTags);
   }
 
   //#endregion
