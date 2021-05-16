@@ -14,7 +14,7 @@ joplin.plugins.register({
     //#region HELPERS
 
     function checkMatchingTags(noteTags: any[], layoutTags: string[]): boolean {
-      return (noteTags.findIndex(tag => layoutTags.includes(tag.title)) >= 0);
+      return (noteTags.findIndex(tag => layoutTags.includes(tag.title.toLocaleLowerCase())) >= 0);
     }
 
     function visiblePanesMatchLayout(noteVisiblePanes: any[], layout: LayoutType): boolean {
