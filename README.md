@@ -4,7 +4,7 @@ Persistent Editor Layout is a plugin to extend the UX of [Joplin's](https://jopl
 
 It allows to persist the editor layout for each note separately with [custom tags](#usage).
 
-> :warning: **CAUTION** - Requires Joplin **v1.7.4** or newer
+> :warning: **CAUTION** - Requires Joplin **v1.8.2** or newer
 
 ## Features
 

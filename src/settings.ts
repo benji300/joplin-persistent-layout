@@ -112,67 +112,66 @@ export class Settings {
    */
   async register() {
 
-    // settings section
+    // register settings in own section
     await joplin.settings.registerSection('persistent.layout.settings', {
       label: 'Persistent Layout',
       iconName: 'fas fa-columns'
     });
-
-    // private settings
-    // none
-
-    // general settings
-    await joplin.settings.registerSetting('defaultLayout', {
-      value: LayoutType.None,
-      type: SettingItemType.Int,
-      section: 'persistent.layout.settings',
-      isEnum: true,
-      public: true,
-      label: 'Default editor layout',
-      description: 'Default editor layout which is used for all notes that have no "layout" tags specified. If "None" is selected, the current active is kept.',
-      options: {
-        '0': ' ',
-        '1': 'Editor',
-        '2': 'Split View',
-        '3': 'Viewer',
-        '4': 'Rich Text'
+    await joplin.settings.registerSettings({
+      // private settings
+      // none
+      // general settings
+      defaultLayout: {
+        value: LayoutType.None,
+        type: SettingItemType.Int,
+        section: 'persistent.layout.settings',
+        isEnum: true,
+        public: true,
+        label: 'Default editor layout',
+        description: 'Default editor layout which is used for all notes that have no "layout" tags specified. If "None" is selected, the current active is kept.',
+        options: {
+          '0': ' ',
+          '1': 'Editor',
+          '2': 'Split View',
+          '3': 'Viewer',
+          '4': 'Rich Text'
+        },
       },
+      editorTags: {
+        value: this._editorTags,
+        type: SettingItemType.String,
+        section: 'persistent.layout.settings',
+        public: true,
+        label: 'Tags for editor layout mode: Markdown editor',
+        description: 'Specify as comma-separated list.'
+      },
+      splitTags: {
+        value: this._splitTags,
+        type: SettingItemType.String,
+        section: 'persistent.layout.settings',
+        public: true,
+        label: 'Tags for editor layout mode: Split view',
+        description: 'Specify as comma-separated list.'
+      },
+      viewerTags: {
+        value: this._viewerTags,
+        type: SettingItemType.String,
+        section: 'persistent.layout.settings',
+        public: true,
+        label: 'Tags for editor layout mode: Rendered Markdown viewer',
+        description: 'Specify as comma-separated list.'
+      },
+      richtextTags: {
+        value: this._richtextTags,
+        type: SettingItemType.String,
+        section: 'persistent.layout.settings',
+        public: true,
+        label: 'Tags for editor layout mode: Rich text (WYSIWYG)',
+        description: 'Specify as comma-separated list.'
+      },
+      // advanced settings
+      // none
     });
-    await joplin.settings.registerSetting('editorTags', {
-      value: this._editorTags,
-      type: SettingItemType.String,
-      section: 'persistent.layout.settings',
-      public: true,
-      label: 'Tags for editor layout mode: Markdown editor',
-      description: 'Specify as comma-separated list.'
-    });
-    await joplin.settings.registerSetting('splitTags', {
-      value: this._splitTags,
-      type: SettingItemType.String,
-      section: 'persistent.layout.settings',
-      public: true,
-      label: 'Tags for editor layout mode: Split view',
-      description: 'Specify as comma-separated list.'
-    });
-    await joplin.settings.registerSetting('viewerTags', {
-      value: this._viewerTags,
-      type: SettingItemType.String,
-      section: 'persistent.layout.settings',
-      public: true,
-      label: 'Tags for editor layout mode: Rendered Markdown viewer',
-      description: 'Specify as comma-separated list.'
-    });
-    await joplin.settings.registerSetting('richtextTags', {
-      value: this._richtextTags,
-      type: SettingItemType.String,
-      section: 'persistent.layout.settings',
-      public: true,
-      label: 'Tags for editor layout mode: Rich text (WYSIWYG)',
-      description: 'Specify as comma-separated list.'
-    });
-
-    // advanced settings
-    // none
 
     // initially read settings
     await this.read();
