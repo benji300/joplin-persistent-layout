@@ -3,6 +3,8 @@ import { ChangeEvent } from 'api/JoplinSettings';
 import { LayoutType, LayoutDesc, Settings } from './settings';
 import { DA } from './data';
 
+let previousSelectedNoteId = '';
+
 joplin.plugins.register({
   onStart: async function () {
     const SETTINGS = joplin.settings;
@@ -56,6 +58,9 @@ joplin.plugins.register({
         const selectedNote: any = await WORKSPACE.selectedNote();
 
         if (selectedNote) {
+          // To prevent redundant callback activations.
+          if (selectedNote.id === previousSelectedNoteId) return;
+          previousSelectedNoteId = selectedNote.id;
           const noteTags: any[] = await DA.getTagsOfNote(selectedNote.id);
           let layout: LayoutType = settings.defaultLayout;
 
@@ -72,6 +77,8 @@ joplin.plugins.register({
           if (layout > 0) {
             await toggleVisiblePanes(layout);
           }
+        } else {
+          previousSelectedNoteId = '';
         }
       } catch (error) {
         console.error(`onNoteSelectionChange: ${error}`);
