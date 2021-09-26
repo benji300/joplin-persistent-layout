@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- None
+
+## [2.2.0] - 2021-09-26
+
 ### Added
 
 - `Previous` selection to user option `Default editor layout`

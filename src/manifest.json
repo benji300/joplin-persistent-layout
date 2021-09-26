@@ -2,7 +2,7 @@
   "manifest_version": 1,
   "id": "joplin.plugin.benji.persistentLayout",
   "app_min_version": "1.8.2",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "name": "Persistent Editor Layout",
   "description": "Save the editor layout (editor/split view/viewer/rich text) for each note separately with custom tags.",
   "author": "Benji300",
