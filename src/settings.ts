@@ -1,37 +1,7 @@
 import joplin from 'api';
 import { SettingItemType } from 'api/types';
 import { ChangeEvent } from 'api/JoplinSettings';
-
-/**
- * Layout type definitions.
- */
-export enum LayoutType {
-  None = 0,
-  Editor = 1,
-  Split = 2,
-  Viewer = 3,
-  Richtext = 4 // WYSIWYG
-}
-
-/**
- * Definition of the layout description.
- */
-export interface ILayoutDesc {
-  label: string,
-  codeView: boolean,
-  panes: string[]
-}
-
-/**
- * Array of layout descriptions. Order must match with LayoutType enum.
- */
-export const LayoutDesc: ILayoutDesc[] = [
-  { label: 'layout:none', codeView: true, panes: [""] }, // no change
-  { label: 'layout:editor', codeView: true, panes: ["editor"] }, // editor
-  { label: 'layout:split', codeView: true, panes: ["editor", "viewer"] }, // split view
-  { label: 'layout:viewer', codeView: true, panes: ["viewer"] }, // viewer
-  { label: 'layout:richtext', codeView: false, panes: [""] } // rich text (WYSIWYG)
-];
+import { LayoutType } from './Layout';
 
 /**
  * Advanced style setting default values.
@@ -75,6 +45,11 @@ export class Settings {
 
   get defaultLayout(): LayoutType {
     return this._defaultLayout;
+  }
+
+  get allLayoutTags(): string[] {
+    let arr: string[] = [...this.editorTags, ...this.splitTags, ...this.viewerTags, ...this.richtextTags];
+    return arr;
   }
 
   get editorTags(): string[] {
@@ -128,13 +103,16 @@ export class Settings {
         isEnum: true,
         public: true,
         label: 'Default editor layout',
-        description: 'Default editor layout which is used for all notes that have no "layout" tags specified. If "None" is selected, the current active is kept.',
+        description: 'Default editor layout which is used for all notes that have no layout tags specified. ' +
+          'If "None" (empty) is selected, the current active layout is kept. ' +
+          'If "Previous" is selected, the last layout which was active on the last selcted note without layout tags is restored.',
         options: {
           '0': ' ',
           '1': 'Editor',
           '2': 'Split View',
           '3': 'Viewer',
-          '4': 'Rich Text'
+          '4': 'Rich Text',
+          '5': 'Previous'
         },
       },
       editorTags: {

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `Previous` selection to user option `Default editor layout`
+
 ### Fixed
 
 - Mixed case tags ([#8](https://github.com/benji300/joplin-persistent-layout/issues/8) - Thanks to [@JackGruber](https://github.com/JackGruber))

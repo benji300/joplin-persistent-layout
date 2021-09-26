@@ -1,9 +1,12 @@
 import joplin from 'api';
 import { ChangeEvent } from 'api/JoplinSettings';
-import { LayoutType, LayoutDesc, Settings } from './settings';
+import { Settings } from './settings';
 import { DA } from './data';
+import { Layout, LayoutType } from './Layout';
 
-let previousSelectedNoteId = '';
+let previousSelectedNoteId: string = '';
+let previousLayoutType: LayoutType = LayoutType.Editor;
+let lastNoteId: string = '';
 
 joplin.plugins.register({
   onStart: async function () {
@@ -19,27 +22,24 @@ joplin.plugins.register({
       return (noteTags.findIndex(tag => layoutTags.includes(tag.title.toLocaleLowerCase())) >= 0);
     }
 
-    function visiblePanesMatchLayout(noteVisiblePanes: any[], layout: LayoutType): boolean {
-      // noteVisiblePanes = ["editor","viewer"]
-      return (LayoutDesc[layout].panes.sort().toString() == noteVisiblePanes.sort().toString());
-    }
-
-    async function toggleVisiblePanes(layout: LayoutType) {
-      // console.log(`Toggle layout: ${JSON.stringify(LayoutDesc[layout])}`);
+    async function toggleVisiblePanes(layout: Layout) {
+      // console.debug(`Toggle layout: ${JSON.stringify(layout)}`);
       const codeView: boolean = await settings.editorCodeView;
 
       // toggle markdown/rich text editor
-      if (LayoutDesc[layout].codeView != codeView) {
+      if (layout.isCodeView() != codeView) {
+        // console.debug(`toggleEditors`);
         await joplin.commands.execute('toggleEditors');
       }
 
       // toggle panes for markdown editor
-      if (LayoutDesc[layout].codeView) {
+      if (layout.isCodeView()) {
         for (let i: number = 0; i < 3; i++) {
           const visiblePanes: any[] = await settings.noteVisiblePanes;
-          if (visiblePanesMatchLayout(visiblePanes, layout)) {
+          if (Layout.matchesVisiblePanes(layout.type, visiblePanes)) {
             break;
           }
+          // console.debug(`toggleVisiblePanes`);
           await joplin.commands.execute('toggleVisiblePanes');
         }
       }
@@ -58,25 +58,51 @@ joplin.plugins.register({
         const selectedNote: any = await WORKSPACE.selectedNote();
 
         if (selectedNote) {
-          // To prevent redundant callback activations.
+          console.debug(`selected note: ${selectedNote.title}`);
+
+          // to prevent redundant callback activations
           if (selectedNote.id === previousSelectedNoteId) return;
           previousSelectedNoteId = selectedNote.id;
           const noteTags: any[] = await DA.getTagsOfNote(selectedNote.id);
-          let layout: LayoutType = settings.defaultLayout;
+          let layout: Layout = Layout.create(settings.defaultLayout);
 
           if (checkMatchingTags(noteTags, settings.editorTags)) {          // editor
-            layout = LayoutType.Editor;
+            layout.set(LayoutType.Editor);
           } else if (checkMatchingTags(noteTags, settings.splitTags)) {    // split view
-            layout = LayoutType.Split;
+            layout.set(LayoutType.Split);
           } else if (checkMatchingTags(noteTags, settings.viewerTags)) {   // viewer
-            layout = LayoutType.Viewer;
+            layout.set(LayoutType.Viewer);
           } else if (checkMatchingTags(noteTags, settings.richtextTags)) { // rich text
-            layout = LayoutType.Richtext;
+            layout.set(LayoutType.Richtext);
+          } else { // no layout tags
+
+            // set to previously stored layout if enabled by settings
+            if (layout.type == LayoutType.Previous) {
+              if (previousLayoutType != LayoutType.None) {
+                layout.set(previousLayoutType);
+                // console.debug(`set layout type to previous: ${previousLayoutType}`);
+              }
+            }
           }
 
-          if (layout > 0) {
+          // store layout from previous note w/o layout tags
+          if (lastNoteId) {
+            const lastNoteTags: any[] = await DA.getTagsOfNote(lastNoteId);
+            if (!checkMatchingTags(lastNoteTags, settings.allLayoutTags)) {
+              const codeView: boolean = await settings.editorCodeView;
+              const visiblePanes: any[] = await settings.noteVisiblePanes;
+              previousLayoutType = Layout.getLayoutType(codeView, visiblePanes);
+              // console.debug(`store layout type: ${previousLayoutType}`);
+            }
+          }
+
+          // toggle panes
+          if (layout.isValid()) {
             await toggleVisiblePanes(layout);
           }
+
+          // store selected note id as last
+          lastNoteId = selectedNote.id;
         } else {
           previousSelectedNoteId = '';
         }
