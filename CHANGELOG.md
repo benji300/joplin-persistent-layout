@@ -7,7 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- None
+### Fixed
+
+- Mixed case tags ([#8](https://github.com/benji300/joplin-persistent-layout/issues/8) - Thanks to [@JackGruber](https://github.com/JackGruber))
+- Layout is not set correctly on search ([#7](https://github.com/benji300/joplin-persistent-layout/issues/7)) ([#10](https://github.com/benji300/joplin-persistent-layout/issues/10) - Thanks to [@ken1kob](https://github.com/ken1kob))
 
 ## [2.1.0] - 2021-08-10
 
