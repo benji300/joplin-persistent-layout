@@ -105,7 +105,7 @@ export class Settings {
         label: 'Default editor layout',
         description: 'Default editor layout which is used for all notes that have no layout tags specified. ' +
           'If "None" (empty) is selected, the current active layout is kept. ' +
-          'If "Previous" is selected, the last layout which was active on the last selcted note without layout tags is restored.',
+          'If "Previous" is selected, the last layout which was active on the last selected note without layout tags is restored.',
         options: {
           '0': ' ',
           '1': 'Editor',
