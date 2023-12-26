@@ -114,6 +114,7 @@ export class Settings {
           '4': 'Rich Text',
           '5': 'Previous'
         },
+        storage: 2
       },
       editorTags: {
         value: this._editorTags,
@@ -121,7 +122,8 @@ export class Settings {
         section: 'persistent.layout.settings',
         public: true,
         label: 'Tags for editor layout mode: Markdown editor',
-        description: 'Specify as comma-separated list.'
+        description: 'Specify as comma-separated list.',
+        storage: 2
       },
       splitTags: {
         value: this._splitTags,
@@ -129,7 +131,8 @@ export class Settings {
         section: 'persistent.layout.settings',
         public: true,
         label: 'Tags for editor layout mode: Split view',
-        description: 'Specify as comma-separated list.'
+        description: 'Specify as comma-separated list.',
+        storage: 2
       },
       viewerTags: {
         value: this._viewerTags,
@@ -137,7 +140,8 @@ export class Settings {
         section: 'persistent.layout.settings',
         public: true,
         label: 'Tags for editor layout mode: Rendered Markdown viewer',
-        description: 'Specify as comma-separated list.'
+        description: 'Specify as comma-separated list.',
+        storage: 2
       },
       richtextTags: {
         value: this._richtextTags,
@@ -145,7 +149,8 @@ export class Settings {
         section: 'persistent.layout.settings',
         public: true,
         label: 'Tags for editor layout mode: Rich text (WYSIWYG)',
-        description: 'Specify as comma-separated list.'
+        description: 'Specify as comma-separated list.',
+        storage: 2
       },
       // advanced settings
       // none
